@@ -40,6 +40,7 @@ public class AuthenticationController {
 		}
 	}
 	
+	@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 	@PostMapping(path = "/login")
 	public ResponseEntity<Object> login(@RequestBody SignUpDTO dto) {
 		try {
@@ -53,24 +54,25 @@ public class AuthenticationController {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 	}
-	
+	@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 	@PostMapping(path = "/logout")
-	public ResponseEntity<String> logout() {
+	public ResponseEntity<User> logout() {
 		req.getSession().invalidate();
 		
-		return ResponseEntity.status(200).body("Successfully logged out");
+		return ResponseEntity.status(200).body(new User());
 	}
 	
-	@CrossOrigin(origins = "http://localhost:4200")
+	@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 	@GetMapping(path = "/loginstatus")
 	public ResponseEntity<Object> checkLoginStatus() {
 		User currentlyLoggedInUser = (User) req.getSession().getAttribute("currentUser");
+		
 		
 		if (currentlyLoggedInUser != null) {
 			return ResponseEntity.status(200).body(currentlyLoggedInUser);
 		}
 		
-		return ResponseEntity.status(401).body("Not Logged In");
+		return ResponseEntity.status(200).body(new User());
 	}
 	
 }

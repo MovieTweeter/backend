@@ -16,10 +16,19 @@ public class UserService {
 	@Autowired
 	private UserDAO ud;
 	
+	public UserService(UserDAO ud) {
+		this.ud = ud;
+	}
+	
 	public User getUserByUsernameAndPassword(String username, String password) throws InvalidLoginException {
-		
+		String pw_hash = "";
 		try {
-			String pw_hash = ud.getUserfromUsername(username).getPassword();
+			User userRetrieved = ud.getUserfromUsername(username);
+			
+			if (userRetrieved != null) {
+				pw_hash = userRetrieved.getPassword();
+			}
+			
 			
 			if (!BCrypt.checkpw(password, pw_hash)) {
 				throw new InvalidLoginException("Username and/or password is incorrect");
@@ -31,7 +40,7 @@ public class UserService {
 		} catch(DataAccessException e) {
 			throw new InvalidLoginException("Username and/or password is incorrect");
 
-		}
+		} 
 		
 	}
 	

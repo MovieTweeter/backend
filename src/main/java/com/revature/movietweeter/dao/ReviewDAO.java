@@ -20,7 +20,7 @@ public class ReviewDAO {
 	
 	@Transactional
 	public List<Review> getAllReviews() {
-		List<Review> listOfReviews = em.createQuery("FROM Review r", Review.class).getResultList();
+		List<Review> listOfReviews = em.createQuery("FROM Review r ORDER BY r.submissionTime DESC", Review.class).getResultList();
 		return listOfReviews;
 	}
 	
@@ -38,7 +38,7 @@ public class ReviewDAO {
 	
 	@Transactional
 	public List<Review> getReviewsByMovie(String id) {
-		List<Review> listOfReviewsByMovie = em.createQuery("FROM Review r WHERE r.movieApiId = :id", Review.class).setParameter("id", id).getResultList();
+		List<Review> listOfReviewsByMovie = em.createQuery("FROM Review r WHERE r.movieApiId = :id ORDER BY r.submissionTime DESC", Review.class).setParameter("id", id).getResultList();
 		return listOfReviewsByMovie;
 	}
 	

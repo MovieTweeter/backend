@@ -25,6 +25,7 @@ public class AuthenticationController {
 	@Autowired
 	private HttpServletRequest req;
 	
+	@CrossOrigin(origins = "http://localhost:4200", allowedHeaders = "*", allowCredentials = "true")
 	@PostMapping(path = "/signup")
 	public ResponseEntity<Object> signUp(@RequestBody SignUpDTO dto) {
 		try {

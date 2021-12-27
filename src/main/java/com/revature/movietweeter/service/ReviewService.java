@@ -4,11 +4,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URI;
+
 import java.net.URL;
-import java.net.http.HttpRequest;
-import java.time.Duration;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,10 +14,10 @@ import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.exc.UnrecognizedPropertyException;
-import com.revature.movietweeter.annotation.AuthorizedUser;
 import com.revature.movietweeter.dao.ReviewDAO;
 import com.revature.movietweeter.dto.AddReviewDTO;
 import com.revature.movietweeter.dto.ResponseErrorDTO;
+import com.revature.movietweeter.exception.BlankFieldException;
 import com.revature.movietweeter.exception.InvalidParameterException;
 import com.revature.movietweeter.exception.InvalidRatingException;
 import com.revature.movietweeter.exception.MovieNotFoundException;
@@ -31,13 +29,17 @@ public class ReviewService {
 
 	@Autowired
 	private ReviewDAO rd;
+	
+	public ReviewService(ReviewDAO mockReviewDao) {
+		this.rd = mockReviewDao;
+	}
 
 	public List<Review> getReviews() {
 		return rd.getAllReviews();
 	}
 
 	public Review createReview(User currentlyLoggedInUser, AddReviewDTO dto)
-			throws InvalidRatingException, IOException, MovieNotFoundException {
+			throws InvalidRatingException, IOException, MovieNotFoundException, BlankFieldException {
 		String url = "http://www.omdbapi.com/?i=" + dto.getApiId() + "&apikey=50275210";
 		URL obj = new URL(url);
 		HttpURLConnection con = (HttpURLConnection) obj.openConnection();
@@ -60,6 +62,10 @@ public class ReviewService {
 		}
 
 		in.close();
+		
+		if (dto.getTitle() == null || dto.getReviewText() == null) {
+			throw new BlankFieldException("Fields cannot be left blank");
+		}
 
 		try {
 			int rating = Integer.parseInt(dto.getRating());
@@ -71,8 +77,6 @@ public class ReviewService {
 			throw new InvalidRatingException("Rating must be integer 1-5");
 		}
 		
-		//check if review text proper size
-		//trim whitespace
 		
 		
 

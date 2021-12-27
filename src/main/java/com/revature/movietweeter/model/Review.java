@@ -3,6 +3,7 @@ package com.revature.movietweeter.model;
 import java.util.Date;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -15,10 +16,19 @@ public class Review {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(nullable = false)
 	private String title;
+	
+	@Column(nullable = false)
 	private String reviewText;
+	
+	@Column(nullable = false)
 	private int rating;
+	
+	@Column(nullable = false)
 	private Date submissionTime;
+	
+	@Column(nullable = false)
 	private String movieApiId;
 	
 	@ManyToOne

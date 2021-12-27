@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+
+
 @Entity
 public class User {
 	
@@ -15,9 +17,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(unique=true)
+	@Column(unique=true, nullable = false)
 	private String username;
 	
+	@Column(nullable = false)
 	private String password;
 	
 	public User() {

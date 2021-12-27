@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.revature.movietweeter.annotation.AuthorizedUser;
 import com.revature.movietweeter.dto.AddReviewDTO;
+import com.revature.movietweeter.exception.BlankFieldException;
 import com.revature.movietweeter.exception.InvalidParameterException;
 import com.revature.movietweeter.exception.InvalidRatingException;
 import com.revature.movietweeter.exception.MovieNotFoundException;
@@ -66,6 +67,8 @@ public class ReviewController {
 			e.printStackTrace();
 			return ResponseEntity.status(400).body(e.getMessage());
 		} catch (MovieNotFoundException e) {
+			return ResponseEntity.status(400).body(e.getMessage());
+		} catch (BlankFieldException e) {
 			return ResponseEntity.status(400).body(e.getMessage());
 		}
 
